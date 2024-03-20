@@ -1,3 +1,5 @@
+const workspace = document.getElementById("workspace");
+
 class NoteCard {
     constructor(id,topic,summary,content,links){
         this.div = document.createElement("div");
@@ -23,9 +25,17 @@ class NoteCard {
             return a;
         })
     }
+    displayCard(location){
+        this.aList.forEach(link => {
+            this.section.append(link);
+            this.section.append(document.createElement("br"));
+        });
+        this.div.append(this.h2,this.p,this.section);
+        location.append(this.div);
+    }
 }
 
-console.log(new NoteCard(1,"JavaScript","Objects",
+const testCard = new NoteCard(1,"JavaScript","Objects",
 "This is how to set up objects",
 [[
     ["Semantic Elements Course"],
@@ -39,4 +49,7 @@ console.log(new NoteCard(1,"JavaScript","Objects",
     ["W3Schools Div Tutorial"],
     ["https://www.w3schools.com/html/html_div.asp"],
 ]
-]));
+]);
+
+console.log(testCard);
+testCard.displayCard(workspace)
