@@ -7,16 +7,19 @@ const topics = new Set();
 topics.add("")
 const topicSelect = document.querySelector("#topic-select");
 
+// Creates an element with a class and textContent
 function simpleElement(type,className,text="") {
     const element = document.createElement(type);
     element.className = className;
     element.textContent = text;
     return element;
 }
+// Creates a class responsible for managing the creation of cards
 class NoteCard {
+    // Makes an object for the card
     constructor(id,topic,summary,content,links){
-        console.log(topic);
         this.topic = topic;
+
         this.div = document.createElement("div");
         this.div.className = ("note-card");
         if(this.topic !== "") this.div.classList.add(topic);
@@ -25,7 +28,6 @@ class NoteCard {
         this.h2 = simpleElement("h2","note-summary",summary);
         this.p = simpleElement("p","note-content",content);
         this.section = simpleElement("section","note-links-list");
-
         this.button = simpleElement("button","delete-card","X");
 
         this.aList = links.map(link => {
@@ -34,6 +36,7 @@ class NoteCard {
             return a;
         })
     }
+    // Adds the object to the location provided, calls to addTopic
     displayCard(location){
         this.aList.forEach(link => {
             this.section.append(link);
@@ -41,16 +44,20 @@ class NoteCard {
         });
         this.div.append(this.h2,this.p,this.section,this.button);
         location.append(this.div);
-        if(!topics.has(this.topic)){
-            topics.add(this.topic);
-            const option = document.createElement("option");
-            option.value = this.topic;
-            option.textContent = this.topic;
-            topicSelect.append(option);
-        }
+        addTopic(this.topic);
     }
 }
-
+// Adds a topic to the select dropdown
+function addTopic(topic) {
+    if (!topics.has(topic)) {
+        topics.add(topic)
+        const option = document.createElement("option");
+        option.value = topic;
+        option.textContent = topic;
+        topicSelect.append(option);
+    }
+}
+// Sends a request to the json file and adds the new card
 form.addEventListener("submit",event =>{
     event.preventDefault();
     console.log("Links:");
@@ -85,52 +92,58 @@ form.addEventListener("submit",event =>{
         })
     .catch(error => console.log(error))
 })
-
+// Adds a link to the list
 linkDiv.addEventListener("submit",event =>{
     event.preventDefault();
-    formLinks.push([[linkDiv.querySelector("#link-text").value],[linkDiv.querySelector("#link-url").value]])
-    if(formLinks.length>0){
-        linkDiv.querySelector(".delete").disabled = false;
-    }
+    const linkText = linkDiv.querySelector("#link-text");
+    const linkUrl = linkDiv.querySelector("#link-url")
+    formLinks.push([[linkText.value],[linkUrl.value]])
+
+    if(formLinks.length>0) linkDiv.querySelector(".delete").disabled = false;
+
     const li = document.createElement("li");
-    const p0 = simpleElement("p","",formLinks[formLinks.length-1][0])
-    const p1 = simpleElement("p","",formLinks[formLinks.length-1][1])
+    const p0 = simpleElement("p","",linkText.value)
+    const p1 = simpleElement("p","",linkUrl.value)
     li.append(p0,p1);
     linksDisplay.append(li);
-    linkDiv.querySelector("#link-text").value="";
-    linkDiv.querySelector("#link-url").value="";
+
+    linkText.value = "";
+    linkUrl.value = "";
 })
+// Removes a link from the list
 linkDiv.addEventListener("click",event=>{
     if(event.target.className === "delete"){
         formLinks.pop();
-        if(formLinks.length===0){
-            linkDiv.querySelector(".delete").disabled = true;
-        }
+        if(formLinks.length===0) linkDiv.querySelector(".delete").disabled = true;
         linksDisplay.lastChild.remove();
     }
 })
-
+// Highlights a segment of text
 document.addEventListener("keypress", event => {
     if(event.target.className !== "restrict-key" && event.key === "h"){
         const selection = document.getSelection();
+        // If you have only one element in your selection
         if(selection.anchorNode === selection.focusNode){
+            // Replaces your selection with a span with the class highlight
             const range = selection.getRangeAt(0);
             const span = simpleElement("span","highlight",getSelection().toString())
             selection.deleteFromDocument()
             range.insertNode(span)
-            console.log(range);
-            console.log(getSelection().toString());
         }
     }
 })
+// Removes all highlights from the text, and manages deleting cards
 workspace.addEventListener("click",event =>{
+    // First if is for clicking on highlighted text to remove it
     if(event.target.className==="highlight"){
-        const p = event.target.parentNode;
-        console.log(p.childNodes);
-        const text = Array.from(p.childNodes).reduce((acc,element) => acc + element.textContent,"")
+        const textBox = event.target.parentNode;
+        // Removes all highlight spans from whatever text was clicked
+        const text = Array.from(textBox.childNodes).reduce((acc,element) => acc + element.textContent,"")
         event.target.remove();
-        p.textContent = text;
-    } else if(event.target.className === "delete-card"){
+        textBox.textContent = text;
+    }
+    // Second if is for the delete buttons on the cards
+    else if(event.target.className === "delete-card"){
         console.log(event.target.parentNode.id);
         fetch(`http://localhost:3000/cards/${event.target.parentNode.id}`,{
             method: "DELETE",
@@ -142,6 +155,7 @@ workspace.addEventListener("click",event =>{
         event.target.parentNode.remove();
     }
 })
+// Filters cards by topic
 topicSelect.addEventListener("change", event=> {
     const filter = event.target.value;
     Array.from(workspace.querySelectorAll(".note-card")).forEach(element => {
@@ -153,7 +167,7 @@ topicSelect.addEventListener("change", event=> {
     });
 })
 
-
+// Gets cards on page load
 fetch("http://localhost:3000/cards")
 .then(response => response.json())
 .then(cards => {
