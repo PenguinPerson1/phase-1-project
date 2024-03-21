@@ -46,20 +46,6 @@
       "summary": "Testing Filter",
       "content": "I'm seeing if the filter to only see a certain topic actually works, or it it is fundamentally broken",
       "links": []
-    },
-    {
-      "id": "786c",
-      "topic": "",
-      "summary": "Empty Topic",
-      "content": "This doesn't have a topic, which should make it so that it only shows up if you have no filter set",
-      "links": []
-    },
-    {
-      "id": "215f",
-      "topic": "test",
-      "summary": "Edge of Screen",
-      "content": "Let's see what happens when the divs reach the end of the screen. Hopefully they continue underneath the previous ones",
-      "links": []
     }
   ]
 }

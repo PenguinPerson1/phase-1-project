@@ -26,6 +26,8 @@ class NoteCard {
         this.p = simpleElement("p","note-content",content);
         this.section = simpleElement("section","note-links-list");
 
+        this.button = simpleElement("button","delete-card","X");
+
         this.aList = links.map(link => {
             const a = simpleElement("a","note-link",link[0]);
             a.href = link[1];
@@ -37,7 +39,7 @@ class NoteCard {
             this.section.append(link);
             this.section.append(document.createElement("br"));
         });
-        this.div.append(this.h2,this.p,this.section);
+        this.div.append(this.h2,this.p,this.section,this.button);
         location.append(this.div);
         if(!topics.has(this.topic)){
             topics.add(this.topic);
@@ -108,16 +110,6 @@ linkDiv.addEventListener("click",event=>{
     }
 })
 
-fetch("http://localhost:3000/cards")
-.then(response => response.json())
-.then(cards => {
-    cards.forEach(card => {
-        const newCard = new NoteCard(card.id,card.topic,card.summary,card.content,card.links);
-        newCard.displayCard(workspace);
-    });
-})
-.catch(error => console.log(error))
-
 document.addEventListener("keypress", event => {
     if(event.target.className !== "restrict-key" && event.key === "h"){
         const selection = document.getSelection();
@@ -138,6 +130,16 @@ workspace.addEventListener("click",event =>{
         const text = Array.from(p.childNodes).reduce((acc,element) => acc + element.textContent,"")
         event.target.remove();
         p.textContent = text;
+    } else if(event.target.className === "delete-card"){
+        console.log(event.target.parentNode.id);
+        fetch(`http://localhost:3000/cards/${event.target.parentNode.id}`,{
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+        .catch(error => console.log(error))
+        event.target.parentNode.remove();
     }
 })
 topicSelect.addEventListener("change", event=> {
@@ -150,3 +152,14 @@ topicSelect.addEventListener("change", event=> {
         }
     });
 })
+
+
+fetch("http://localhost:3000/cards")
+.then(response => response.json())
+.then(cards => {
+    cards.forEach(card => {
+        const newCard = new NoteCard(card.id,card.topic,card.summary,card.content,card.links);
+        newCard.displayCard(workspace);
+    });
+})
+.catch(error => console.log(error))
