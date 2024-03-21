@@ -3,6 +3,8 @@ const form = document.getElementById("form");
 const linkDiv = document.getElementById("form-link-div");
 const formLinks =[];
 const linksDisplay = document.getElementById("links-display");
+const topics = new Set();
+const topicSelect = document.querySelector("#topic-select");
 
 function simpleElement(type,className,text="") {
     const element = document.createElement(type);
@@ -10,11 +12,10 @@ function simpleElement(type,className,text="") {
     element.textContent = text;
     return element;
 }
-
 class NoteCard {
     constructor(id,topic,summary,content,links){
+        this.topic = topic;
         this.div = document.createElement("div");
-        console.log(topic);
         this.div.classList.add("note-card",topic);
         this.div.id = id; 
 
@@ -35,6 +36,13 @@ class NoteCard {
         });
         this.div.append(this.h2,this.p,this.section);
         location.append(this.div);
+        if(!topics.has(this.topic)){
+            topics.add(this.topic);
+            const option = document.createElement("option");
+            option.value = this.topic;
+            option.textContent = this.topic;
+            topicSelect.append(option);
+        }
     }
 }
 
@@ -42,15 +50,6 @@ form.addEventListener("submit",event =>{
     event.preventDefault();
     console.log("Links:");
     console.log(formLinks);
-    // const newCard = new NoteCard(3,form.querySelector("#form-topic").value,form.querySelector("#form-summary").value,form.querySelector("#form-content").value,formLinks)
-    // newCard.displayCard(workspace);
-    // formLinks.length = 0;
-    // while (linksDisplay.firstChild) {
-    //     linksDisplay.removeChild(linksDisplay.firstChild);
-    // }
-    // form.querySelector("#form-topic").value="";
-    // form.querySelector("#form-summary").value="";
-    // form.querySelector("#form-content").value="";
     fetch("http://localhost:3000/cards",{
         method: "POST",
         headers: {
@@ -70,7 +69,15 @@ form.addEventListener("submit",event =>{
         console.log(card.links);
         const newCard = new NoteCard(card.id,card.topic,card.summary,card.content,card.links);
         newCard.displayCard(workspace);
-    })
+
+        formLinks.length = 0;
+        while (linksDisplay.firstChild) {
+            linksDisplay.removeChild(linksDisplay.firstChild);
+        }
+            form.querySelector("#form-topic").value="";
+            form.querySelector("#form-summary").value="";
+            form.querySelector("#form-content").value="";
+        })
     .catch(error => console.log(error))
 })
 
@@ -103,5 +110,39 @@ fetch("http://localhost:3000/cards")
         const newCard = new NoteCard(card.id,card.topic,card.summary,card.content,card.links);
         newCard.displayCard(workspace);
     });
+    topics.add("");
 })
 .catch(error => console.log(error))
+
+document.addEventListener("keypress", event => {
+    if(event.target.className !== "restrict-key" && event.key === "h"){
+        const selection = document.getSelection();
+        if(selection.anchorNode === selection.focusNode){
+            const range = selection.getRangeAt(0);
+            const span = simpleElement("span","highlight",getSelection().toString())
+            selection.deleteFromDocument()
+            range.insertNode(span)
+            console.log(range);
+            console.log(getSelection().toString());
+        }
+    }
+})
+workspace.addEventListener("click",event =>{
+    if(event.target.className==="highlight"){
+        const p = event.target.parentNode;
+        console.log(p.childNodes);
+        const text = Array.from(p.childNodes).reduce((acc,element) => acc + element.textContent,"")
+        event.target.remove();
+        p.textContent = text;
+    }
+})
+topicSelect.addEventListener("change", event=> {
+    const filter = event.target.value;
+    Array.from(workspace.querySelectorAll(".note-card")).forEach(element => {
+        if(Array.from(element.classList).includes(filter) || filter === ""){
+            element.hidden = false;
+        } else{
+            element.hidden = true;
+        }
+    });
+})

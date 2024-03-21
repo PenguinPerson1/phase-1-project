@@ -1,60 +1,51 @@
 {
   "cards": [
     {
-      "id": "1",
-      "topic": "test",
-      "summary": "Test1",
-      "content": "This is a test to see if fetch is working",
+      "id": "1094",
+      "topic": "JavaScript",
+      "summary": "Using Selection",
+      "content": "the document.getSelection() method can be used to acquire whatever text the user is selecting. If you just want the text, use .toString() to just turn it into a string. If instead, you want that text as an element, use .getRangeAt() to get a range from the selection",
       "links": [
         [
           [
-            "Semantic Elements Course"
+            "Get Selection Method"
           ],
           [
-            "https://learning.flatironschool.com/courses/7589/pages/html5-semantic-elements?module_item_id=670297"
+            "https://developer.mozilla.org/en-US/docs/Web/API/Window/getSelection"
           ]
         ],
         [
           [
-            "MDN Div Reference"
+            "Selection Reference "
           ],
           [
-            "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/div"
+            "https://developer.mozilla.org/en-US/docs/Web/API/Selection"
           ]
         ]
       ]
     },
     {
-      "id": "25eb",
-      "topic": "test",
-      "summary": "Note Summary",
-      "content": "Here's a paragraph of the actual content of the note. It goes into more detail, and can be as long as it needs to be.",
+      "id": "29a0",
+      "topic": "JavaScript",
+      "summary": "Ranges",
+      "content": "Ranges represent part of a document. I don't know how to use them effectively, but the .insertNode() was helpful for this because it allows you to add a node to the start of the range. This can be combined with .deleteContents() to replace a section of document with something else",
       "links": [
         [
           [
-            "Semantic Elements Course"
+            "Range Reference"
           ],
           [
-            "https://learning.flatironschool.com/courses/7589/pages/html5-semantic-elements?module_item_id=670297"
-          ]
-        ],
-        [
-          [
-            "MDN Div Reference"
-          ],
-          [
-            "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/div"
-          ]
-        ],
-        [
-          [
-            "W3Schools Div Tutorial"
-          ],
-          [
-            "https://www.w3schools.com/html/html_div.asp"
+            "https://developer.mozilla.org/en-US/docs/Web/API/Range"
           ]
         ]
       ]
+    },
+    {
+      "id": "dea1",
+      "topic": "test",
+      "summary": "Testing Filter",
+      "content": "I'm seeing if the filter to only see a certain topic actually works, or it it is fundamentally broken",
+      "links": []
     }
   ]
 }

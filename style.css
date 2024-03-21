@@ -3,4 +3,15 @@
     float:left;
     background-color: #ddd;
   }
-  
+.highlight {
+    background-color: yellow;
+}
+.note-card {
+    padding: 15px;
+    border: 2px;
+    border-radius: 10%;
+    margin: 5px;
+}
+.note-link {
+    color: blue;
+}

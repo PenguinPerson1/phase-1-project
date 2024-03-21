@@ -9,21 +9,24 @@
             <h1>Notes</h1>
             <form id="form">
                 <label for="form-topic">Topic:</label>
-                <input type="text" name="form-topic" id="form-topic">
+                <input type="text" name="form-topic" id="form-topic" class="restrict-key">
                 <label for="form-summary">Note Summary:</label>
-                <input type="text" name="form-summary" id="form-summary" placeholder="Enter Summary">
+                <input type="text" name="form-summary" id="form-summary" placeholder="Enter Summary" class="restrict-key">
                 <label for="form-content">Note Content:</label>
-                <textarea name="form-content" id="form-content" cols="30" rows="5" placeholder="Enter Note"></textarea>
+                <textarea name="form-content" id="form-content" cols="30" rows="5" placeholder="Enter Note" class="restrict-key"></textarea>
                 <input type="submit">
                 <div id="form-link-div">
                     <label for="link-text">Link Text:</label>
-                    <input type="text" name="link-text" id="link-text">
+                    <input type="text" name="link-text" id="link-text" class="restrict-key">
                     <button type="button" class="delete" disabled>X</button><br>
                     <label for="link-url">Link Url:</label>
-                    <input type="text" name="link-url" id="link-url">
+                    <input type="text" name="link-url" id="link-url" class="restrict-key">
                     <button type="button" class="add">Add</button>
                 </div>
             </form>
+            <select name="topic-select" id="topic-select">
+                <option value="">None</option>
+            </select>
             <ul id="links-display">
             </ul>
         </header>
