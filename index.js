@@ -40,15 +40,38 @@ class NoteCard {
 
 form.addEventListener("submit",event =>{
     event.preventDefault();
-    const newCard = new NoteCard(3,form.querySelector("#form-topic").value,form.querySelector("#form-summary").value,form.querySelector("#form-content").value,formLinks)
-    newCard.displayCard(workspace);
-    formLinks.length = 0;
-    while (linksDisplay.firstChild) {
-        linksDisplay.removeChild(linksDisplay.firstChild);
-    }
-    form.querySelector("#form-topic").value="";
-    form.querySelector("#form-summary").value="";
-    form.querySelector("#form-content").value="";
+    console.log("Links:");
+    console.log(formLinks);
+    // const newCard = new NoteCard(3,form.querySelector("#form-topic").value,form.querySelector("#form-summary").value,form.querySelector("#form-content").value,formLinks)
+    // newCard.displayCard(workspace);
+    // formLinks.length = 0;
+    // while (linksDisplay.firstChild) {
+    //     linksDisplay.removeChild(linksDisplay.firstChild);
+    // }
+    // form.querySelector("#form-topic").value="";
+    // form.querySelector("#form-summary").value="";
+    // form.querySelector("#form-content").value="";
+    fetch("http://localhost:3000/cards",{
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify({
+            topic: form.querySelector("#form-topic").value,
+            summary: form.querySelector("#form-summary").value,
+            content: form.querySelector("#form-content").value,
+            links: formLinks
+        })
+    })
+    .then(response => response.json())
+    .then(card => {
+        console.log(card);
+        console.log(card.links);
+        const newCard = new NoteCard(card.id,card.topic,card.summary,card.content,card.links);
+        newCard.displayCard(workspace);
+    })
+    .catch(error => console.log(error))
 })
 
 linkDiv.addEventListener("click",event =>{
@@ -73,22 +96,12 @@ linkDiv.addEventListener("click",event =>{
     }
 })
 
-
-const testCard = new NoteCard(1,"JavaScript","Objects",
-"This is how to set up objects",
-[[
-    ["Semantic Elements Course"],
-    ["https://learning.flatironschool.com/courses/7589/pages/html5-semantic-elements?module_item_id=670297"]
-],
-[
-    ["MDN Div Reference"],
-    ["https://developer.mozilla.org/en-US/docs/Web/HTML/Element/div"],
-],
-[
-    ["W3Schools Div Tutorial"],
-    ["https://www.w3schools.com/html/html_div.asp"],
-]
-]);
-
-console.log(testCard);
-testCard.displayCard(workspace)
+fetch("http://localhost:3000/cards")
+.then(response => response.json())
+.then(cards => {
+    cards.forEach(card => {
+        const newCard = new NoteCard(card.id,card.topic,card.summary,card.content,card.links);
+        newCard.displayCard(workspace);
+    });
+})
+.catch(error => console.log(error))
