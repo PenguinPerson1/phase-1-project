@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>Notes</title>
         <link rel="stylesheet" href="./style.css">
         <script defer src="./index.js"></script>
     </head>
     <body>
+        <h1>Notes</h1>
         <header>
-            <h1>Notes</h1>
             <form id="form">
                 <label for="form-topic">Topic:</label>
-                <input type="text" name="form-topic" id="form-topic" class="restrict-key">
+                <input type="text" name="form-topic" id="form-topic" class="restrict-key"> <br>
                 <label for="form-summary">Note Summary:</label>
-                <input type="text" name="form-summary" id="form-summary" placeholder="Enter Summary" class="restrict-key">
-                <label for="form-content">Note Content:</label>
+                <input type="text" name="form-summary" id="form-summary" placeholder="Enter Summary" class="restrict-key" required> <br>
+                <label for="form-content" required>Note Content:</label>
                 <textarea name="form-content" id="form-content" cols="30" rows="5" placeholder="Enter Note" class="restrict-key"></textarea>
                 <input type="submit">
-                <div id="form-link-div">
-                    <label for="link-text">Link Text:</label>
-                    <input type="text" name="link-text" id="link-text" class="restrict-key">
-                    <button type="button" class="delete" disabled>X</button><br>
-                    <label for="link-url">Link Url:</label>
-                    <input type="text" name="link-url" id="link-url" class="restrict-key">
-                    <button type="button" class="add">Add</button>
-                </div>
+            </form>
+            <form id="form-link-div">
+                <label for="link-text">Link Text:</label>
+                <input type="text" name="link-text" id="link-text" class="restrict-key" required>
+                <button type="button" class="delete" disabled>X</button><br>
+                <label for="link-url">Link Url:</label>
+                <input type="text" name="link-url" id="link-url" class="restrict-key" required>
+                <input type="submit" class="add" value="Add"></input>
             </form>
             <select name="topic-select" id="topic-select">
                 <option value="">None</option>

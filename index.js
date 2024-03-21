@@ -4,6 +4,7 @@ const linkDiv = document.getElementById("form-link-div");
 const formLinks =[];
 const linksDisplay = document.getElementById("links-display");
 const topics = new Set();
+topics.add("")
 const topicSelect = document.querySelector("#topic-select");
 
 function simpleElement(type,className,text="") {
@@ -14,9 +15,11 @@ function simpleElement(type,className,text="") {
 }
 class NoteCard {
     constructor(id,topic,summary,content,links){
+        console.log(topic);
         this.topic = topic;
         this.div = document.createElement("div");
-        this.div.classList.add("note-card",topic);
+        this.div.className = ("note-card");
+        if(this.topic !== "") this.div.classList.add(topic);
         this.div.id = id; 
 
         this.h2 = simpleElement("h2","note-summary",summary);
@@ -81,25 +84,27 @@ form.addEventListener("submit",event =>{
     .catch(error => console.log(error))
 })
 
-linkDiv.addEventListener("click",event =>{
+linkDiv.addEventListener("submit",event =>{
+    event.preventDefault();
+    formLinks.push([[linkDiv.querySelector("#link-text").value],[linkDiv.querySelector("#link-url").value]])
+    if(formLinks.length>0){
+        linkDiv.querySelector(".delete").disabled = false;
+    }
+    const li = document.createElement("li");
+    const p0 = simpleElement("p","",formLinks[formLinks.length-1][0])
+    const p1 = simpleElement("p","",formLinks[formLinks.length-1][1])
+    li.append(p0,p1);
+    linksDisplay.append(li);
+    linkDiv.querySelector("#link-text").value="";
+    linkDiv.querySelector("#link-url").value="";
+})
+linkDiv.addEventListener("click",event=>{
     if(event.target.className === "delete"){
         formLinks.pop();
         if(formLinks.length===0){
             linkDiv.querySelector(".delete").disabled = true;
         }
         linksDisplay.lastChild.remove();
-    } else if(event.target.className === "add"){
-        formLinks.push([[linkDiv.querySelector("#link-text").value],[linkDiv.querySelector("#link-url").value]])
-        if(formLinks.length>0){
-            linkDiv.querySelector(".delete").disabled = false;
-        }
-        const li = document.createElement("li");
-        const p0 = simpleElement("p","",formLinks[formLinks.length-1][0])
-        const p1 = simpleElement("p","",formLinks[formLinks.length-1][1])
-        li.append(p0,p1);
-        linksDisplay.append(li);
-        linkDiv.querySelector("#link-text").value="";
-        linkDiv.querySelector("#link-url").value="";
     }
 })
 
@@ -110,7 +115,6 @@ fetch("http://localhost:3000/cards")
         const newCard = new NoteCard(card.id,card.topic,card.summary,card.content,card.links);
         newCard.displayCard(workspace);
     });
-    topics.add("");
 })
 .catch(error => console.log(error))
 
