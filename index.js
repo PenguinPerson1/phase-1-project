@@ -1,27 +1,25 @@
 const workspace = document.getElementById("workspace");
 
+function simpleElement(type,className,text="") {
+    const element = document.createElement(type);
+    element.className = className;
+    element.textContent = text;
+    return element;
+}
+
 class NoteCard {
     constructor(id,topic,summary,content,links){
         this.div = document.createElement("div");
         this.div.classList.add("note-card",topic);
-        this.div.id = id;
+        this.div.id = id; 
 
-        this.h2 = document.createElement("h2");
-        this.h2.className = "note-summary"
-        this.h2.textContent = summary;
-
-        this.p = document.createElement("p");
-        this.p.className = "note-content"
-        this.p.textContent = content
-
-        this.section = document.createElement("section");
-        this.section.className = "note-links-list";
+        this.h2 = simpleElement("h2","note-summary",summary);
+        this.p = simpleElement("p","note-content",content);
+        this.section = simpleElement("section","note-links-list");
 
         this.aList = links.map(link => {
-            const a = document.createElement("a");
+            const a = simpleElement("a","note-link",link[0]);
             a.href = link[1];
-            a.textContent = link[0];
-            a.className = "note-link";
             return a;
         })
     }
