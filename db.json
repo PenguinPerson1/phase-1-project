@@ -4,7 +4,7 @@
       "id": "1094",
       "topic": "JavaScript",
       "summary": "Using Selection",
-      "content": "the document.getSelection() method can be used to acquire whatever text the user is selecting. If you just want the text, use .toString() to just turn it into a string. If instead, you want that text as an element, use .getRangeAt() to get a range from the selection",
+      "content": "the 'document.getSelection()' method can be used to acquire whatever text the user is selecting. If you just want the text, use '.toString()' to just turn it into a string. If instead, you want that text as an element, use '.getRangeAt()' to get a range from the selection",
       "links": [
         [
           [
@@ -28,7 +28,7 @@
       "id": "29a0",
       "topic": "JavaScript",
       "summary": "Ranges",
-      "content": "Ranges represent part of a document. I don't know how to use them effectively, but the .insertNode() was helpful for this because it allows you to add a node to the start of the range. This can be combined with .deleteContents() to replace a section of document with something else",
+      "content": "Ranges represent part of a document. I don't know how to use them effectively, but the '.insertNode()' was helpful for this because it allows you to add a node to the start of the range. This can be combined with '.deleteContents()' to replace a section of document with something else",
       "links": [
         [
           [
@@ -41,11 +41,76 @@
       ]
     },
     {
-      "id": "dea1",
-      "topic": "test",
-      "summary": "Testing Filter",
-      "content": "I'm seeing if the filter to only see a certain topic actually works, or it it is fundamentally broken",
-      "links": []
+      "id": "caa9",
+      "topic": "JavaScript",
+      "summary": "Objects using Class",
+      "content": "There are 2 ways to define objects, either using class, which is newer, or by using functions and prototype, which is older. If you use class, the object must include a constructor function with the syntax: 'constructor(parameters){code}'  Private properties can only be accessed by that object and its methods, and they are defined by adding # before the name, and have to be defined outside of the constructor (they can be given values in the constructor).  Static methods can't be accessed through instances, just through the class itself. You can also use Getter and Setter functions to return data as if it was a property. This can be used to only do complicated calculations if they are needed, or return data stored in a different property",
+      "links": [
+        [
+          [
+            "Method Types"
+          ],
+          [
+            "https://learning.flatironschool.com/courses/7589/pages/method-types?module_item_id=670275"
+          ]
+        ],
+        [
+          [
+            "Classes Reference"
+          ],
+          [
+            "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes"
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "c65d",
+      "topic": "JavaScript",
+      "summary": "Object Inheritance",
+      "content": "To extend a class, use the syntax 'class c0 extends c1', where c0 is the original class and c1 is the one you are creating. This new class inherits the constructor by default, and inherits all methods of the parent class. You can then add more methods by just adding them to the new class, but adding to the constructor is more complicated. You have to define your own constructor in the new class, then use 'super(parentParameters)' to call the parent constructor. The parameters inside the parenthesis should be all that the parent constructor requires. Similarly, 'super.parentMethod()' can be used within methods in order to create a method that adds to the functionality of the parent one.",
+      "links": [
+        [
+          [
+            "Extend"
+          ],
+          [
+            "https://learning.flatironschool.com/courses/7589/modules/items/670279"
+          ]
+        ],
+        [
+          [
+            "Super"
+          ],
+          [
+            "https://learning.flatironschool.com/courses/7589/pages/super?module_item_id=670281"
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "7e99",
+      "topic": "JavaScript",
+      "summary": "Objects using Functions",
+      "content": "A constructor function is just a function that returns an object based on the parameters you give it, then paired with the 'new' keyword to connect the objects created with them. By convention, constructor functions start with a capital letter. To define an object from a constructor function, use this syntax: 'const obj = Constructor(parameters)'. Prototypes allow different functions to share the same exact method instead of each getting a copy. the syntax is: 'Constructor.prototype.functionName = function(parameters){}'",
+      "links": [
+        [
+          [
+            "Constructor Functions"
+          ],
+          [
+            "https://learning.flatironschool.com/courses/7589/pages/constructor-functions?module_item_id=670286"
+          ]
+        ],
+        [
+          [
+            "Using Prototypes"
+          ],
+          [
+            "https://learning.flatironschool.com/courses/7589/pages/using-prototypes?module_item_id=670288"
+          ]
+        ]
+      ]
     }
   ]
 }

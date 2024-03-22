@@ -28,7 +28,8 @@ class NoteCard {
         this.h2 = simpleElement("h2","note-summary",summary);
         this.p = simpleElement("p","note-content",content);
         this.section = simpleElement("section","note-links-list");
-        this.button = simpleElement("button","delete-card","X");
+        this.buttonDelete = simpleElement("button","delete-card","X");
+        this.buttonEdit = simpleElement("button","edit-card","Edit");
 
         this.aList = links.map(link => {
             const a = simpleElement("a","note-link",link[0]);
@@ -42,7 +43,7 @@ class NoteCard {
             this.section.append(link);
             this.section.append(document.createElement("br"));
         });
-        this.div.append(this.h2,this.p,this.section,this.button);
+        this.div.append(this.h2,this.p,this.section,this.buttonDelete, this.buttonEdit);
         location.append(this.div);
         addTopic(this.topic);
     }
@@ -132,7 +133,7 @@ document.addEventListener("keypress", event => {
         }
     }
 })
-// Removes all highlights from the text, and manages deleting cards
+// Removes all highlights from the text, and manages both buttons
 workspace.addEventListener("click",event =>{
     // First if is for clicking on highlighted text to remove it
     if(event.target.className==="highlight"){
@@ -148,11 +149,42 @@ workspace.addEventListener("click",event =>{
         fetch(`http://localhost:3000/cards/${event.target.parentNode.id}`,{
             method: "DELETE",
             headers: {
-                "Content-Type": "application/json",
+                "Content-Type": "application/json"
             }
         })
         .catch(error => console.log(error))
         event.target.parentNode.remove();
+    }
+    // Third if is for the edit buttons on the cards
+    else if(event.target.className === "edit-card"){
+        const p = event.target.parentNode.querySelector(".note-content");
+        const textArea = simpleElement("textArea","restrict-key",p.textContent);
+        textArea.cols = "31";
+        textArea.style.height = `${Math.ceil(p.clientHeight*1.1)}px`;
+        p.replaceWith(textArea);
+        event.target.textContent = "Submit edits"
+        event.target.className = "edit-submit"
+    }
+    // Fourth is the sumbit edits button (only after you edit)
+    else if(event.target.className === "edit-submit"){
+        const textArea = event.target.parentNode.querySelector(".restrict-key");
+        fetch(`http://localhost:3000/cards/${event.target.parentNode.id}`,{
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({
+                content: textArea.value
+            })
+        })
+        .then(resp => resp.json())
+        .then(card => {
+            const p = simpleElement("p","note-content",card.content);
+            textArea.replaceWith(p);
+            event.target.textContent = "edit"
+            event.target.className = "edit-card"
+        })
     }
 })
 // Filters cards by topic
