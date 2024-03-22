@@ -102,9 +102,14 @@ linkDiv.addEventListener("submit",event =>{
 
     if(formLinks.length>0) linkDiv.querySelector(".delete").disabled = false;
 
+    // If the link is longer than maxLength characters, it gets shortened
+    const maxLength = 30;
+    let shortUrl = linkUrl.value;
+    if (shortUrl.length>maxLength) shortUrl = shortUrl.slice(0,maxLength-3)+"...";
+
     const li = document.createElement("li");
     const p0 = simpleElement("p","",linkText.value)
-    const p1 = simpleElement("p","",linkUrl.value)
+    const p1 = simpleElement("p","",shortUrl)
     li.append(p0,p1);
     linksDisplay.append(li);
 
