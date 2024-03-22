@@ -9,8 +9,8 @@
 .note-card {
     padding: 15px;
     border: 2px;
-    border-radius: 10%;
-    margin: 5px;
+    border-radius: 25px;
+    margin: 15px;
 }
 .note-link {
     color: blue;
@@ -24,3 +24,32 @@
 #links-display li {
     padding-right: 20px;
 }
+.note-links-list {
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+
+}
+select {
+    appearance: none;
+    width: 300px;
+    height: 100%;
+    padding: 5px;
+    padding-left: 10px;
+}
+.select-wrapper > *{
+    font-size: 17px;
+}
+.select-wrapper {
+    position: relative;
+    margin: 20px auto;
+    margin-bottom: 10px;
+    width: 300px;
+}
+.select-wrapper::after {
+    content: "\25BC";
+    font-size: 1rem;
+    top: 27px;
+    right: 10px;
+    position: absolute;
+}
+  
