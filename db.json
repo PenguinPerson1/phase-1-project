@@ -2,6 +2,7 @@
   "cards": [
     {
       "id": "1094",
+      "type": "text",
       "topic": "JavaScript",
       "summary": "Using Selection",
       "content": "the 'document.getSelection()' method can be used to acquire whatever text the user is selecting. If you just want the text, use '.toString()' to just turn it into a string. If instead, you want that text as an element, use '.getRangeAt()' to get a range from the selection",
@@ -26,9 +27,10 @@
     },
     {
       "id": "29a0",
+      "type": "text",
       "topic": "JavaScript",
       "summary": "Ranges",
-      "content": "Ranges represent part of a document. I don't know how to use them effectively, but the '.insertNode()' was helpful for this because it allows you to add a node to the start of the range. This can be combined with '.deleteContents()' to replace a section of document with something else",
+      "content": "Ranges represent part of a document. I don't know how to use them effectively, but the '.insertNode()' was helpful for this because it allows you to add a node to the start of the range. This can be combined with '.deleteContents()' to replace a section of document with something else. Alternatively, '.surroundContents()' can allow you to do the same thing a lot more simply",
       "links": [
         [
           [
@@ -42,6 +44,7 @@
     },
     {
       "id": "caa9",
+      "type": "text",
       "topic": "JavaScript",
       "summary": "Objects using Class",
       "content": "If you use class to define objects, the object must include a constructor function with the syntax: 'constructor(parameters){code}'  Private properties ('#propertyName') can only be accessed by that object and its method and have to be defined outside of the constructor (they can be given values in the constructor). Static methods ('static methodName') can't be accessed through instances, just through the class itself. You can also use Getter and Setter functions to return data as if it was a property. This can be used to only do complicated calculations if they are needed, or return data stored in a different property",
@@ -66,6 +69,7 @@
     },
     {
       "id": "c65d",
+      "type": "text",
       "topic": "JavaScript",
       "summary": "Object Inheritance",
       "content": "To extend a class, use the syntax 'class c0 extends c1', where c0 is the original class and c1 is the one you are creating. This new class inherits the constructor by default, and inherits all methods of the parent class. You can then add more methods by just adding them to the new class, but adding to the constructor is more complicated. You have to define your own constructor in the new class, then use 'super(parentParameters)' to call the parent constructor. The parameters inside the parenthesis should be all that the parent constructor requires. Similarly, 'super.parentMethod()' can be used within methods in order to create a method that adds to the functionality of the parent one.",
@@ -90,6 +94,7 @@
     },
     {
       "id": "7e99",
+      "type": "text",
       "topic": "JavaScript",
       "summary": "Objects using Functions",
       "content": "A constructor function is just a function that returns an object based on the parameters you give it, then paired with the 'new' keyword to connect the objects created with them. By convention, constructor functions start with a capital letter. To define an object from a constructor function, use this syntax: 'const obj = Constructor(parameters)'. Prototypes allow different functions to share the same exact method instead of each getting a copy. the syntax is: 'Constructor.prototype.functionName = function(parameters){}'",
@@ -114,6 +119,7 @@
     },
     {
       "id": "d41d",
+      "type": "text",
       "topic": "CSS",
       "summary": "Basic Formatting Select",
       "content": "Select dropdowns are hard to change, as the formatting of form elements is mostly done by the browsers, and because they one of the most complicated form elements. The menu they pull up when clicked on cannot be styled without JavaScript. The most generally applicable command is 'appearance: none', which clears some of the default formatting. To create a custom arrow on the select, you first need to put the select in a div, as the '::after' pseudo-element cannot be used on form elements. This pseudo-element is then set to have content \"\\25BC\" which is the CSS code for the arrow seen and positioned on the selector. The only other things done on this page were some padding to make the text feel less cramped and margins to visually separate it from unrelated elements.",
@@ -143,6 +149,14 @@
           ]
         ]
       ]
+    },
+    {
+      "id": "4b85",
+      "topic": "test",
+      "type": "image",
+      "summary": "Image Size",
+      "content": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpR71uxt5jrwya15ULcRLv8LeDVneoRdJkgw&s",
+      "links": []
     }
   ]
 }

@@ -17,7 +17,7 @@ function simpleElement(type,className,text="") {
 // Creates a class responsible for managing the creation of cards
 class NoteCard {
     // Makes an object for the card
-    constructor(id,topic,summary,content,links){
+    constructor(id,topic,summary,links){
         this.topic = topic;
 
         this.div = document.createElement("div");
@@ -26,7 +26,6 @@ class NoteCard {
         this.div.id = id; 
 
         this.h2 = simpleElement("h2","note-summary",summary);
-        this.p = simpleElement("p","note-content",content);
         this.section = simpleElement("section","note-links-list");
         this.buttonDelete = simpleElement("button","delete-card","X");
         this.buttonEdit = simpleElement("button","edit-card","Edit");
@@ -38,14 +37,35 @@ class NoteCard {
         })
     }
     // Adds the object to the location provided, calls to addTopic
-    displayCard(location){
+    displayCard(location,extra){
         this.aList.forEach(link => {
             this.section.append(link);
             this.section.append(document.createElement("br"));
         });
-        this.div.append(this.h2,this.p,this.section,this.buttonDelete, this.buttonEdit);
+        this.div.append(this.h2,extra,this.section,this.buttonDelete, this.buttonEdit);
         location.append(this.div);
         addTopic(this.topic);
+    }
+}
+// Each class handles a different 
+class TextCard extends NoteCard {
+    constructor(id,topic,summary,text,links){
+        super(id,topic,summary,links);
+        this.p = simpleElement("p","note-text",text);
+    }
+    displayCard(location){
+        super.displayCard(location,this.p);
+    }
+}
+class ImageCard extends NoteCard {
+    constructor(id,topic,summary,image,links){
+        super(id,topic,summary,links);
+        this.img = simpleElement("img","note-image");
+        this.img.src = image;
+        console.log(this.img);
+    }
+    displayCard(location){
+        super.displayCard(location,this.img);
     }
 }
 // Adds a topic to the select dropdown
@@ -61,8 +81,13 @@ function addTopic(topic) {
 // Sends a request to the json file and adds the new card
 form.addEventListener("submit",event =>{
     event.preventDefault();
-    console.log("Links:");
-    console.log(formLinks);
+    console.log(event);
+    let type;
+    if (form.querySelector("#text-toggle").checked) {
+        type = "text"
+    } else {
+        type = "image"
+    }
     fetch("http://localhost:3000/cards",{
         method: "POST",
         headers: {
@@ -71,6 +96,7 @@ form.addEventListener("submit",event =>{
         },
         body: JSON.stringify({
             topic: form.querySelector("#form-topic").value,
+            type: type,
             summary: form.querySelector("#form-summary").value,
             content: form.querySelector("#form-content").value,
             links: formLinks
@@ -78,9 +104,14 @@ form.addEventListener("submit",event =>{
     })
     .then(response => response.json())
     .then(card => {
-        console.log(card);
-        console.log(card.links);
-        const newCard = new NoteCard(card.id,card.topic,card.summary,card.content,card.links);
+        console.log(card.type);
+        let newCard;
+        if (card.type === "text") {
+            newCard = new TextCard(card.id,card.topic,card.summary,card.content,card.links);
+        } else {
+            newCard = new ImageCard(card.id,card.topic,card.summary,card.content,card.links);
+            console.log("creating an image");
+        }
         newCard.displayCard(workspace);
 
         formLinks.length = 0;
@@ -137,7 +168,7 @@ document.addEventListener("keypress", event => {
         }
     }
 })
-// Removes all highlights from the text, and manages both buttons
+// Removes the clicked highlight, and manages both buttons
 workspace.addEventListener("click",event =>{
     // First if is for clicking on highlighted text to remove it
     if(event.target.className==="highlight"){
@@ -160,7 +191,7 @@ workspace.addEventListener("click",event =>{
     }
     // Third if is for the edit buttons on the cards
     else if(event.target.className === "edit-card"){
-        const p = event.target.parentNode.querySelector(".note-content");
+        const p = event.target.parentNode.querySelector(".note-text");
         const textArea = simpleElement("textArea","restrict-key",p.textContent);
         textArea.cols = "31";
         textArea.style.height = `${Math.ceil(p.clientHeight*1.1)}px`;
@@ -183,7 +214,7 @@ workspace.addEventListener("click",event =>{
         })
         .then(resp => resp.json())
         .then(card => {
-            const p = simpleElement("p","note-content",card.content);
+            const p = simpleElement("p","note-text",card.content);
             textArea.replaceWith(p);
             event.target.textContent = "edit"
             event.target.className = "edit-card"
@@ -207,7 +238,13 @@ fetch("http://localhost:3000/cards")
 .then(response => response.json())
 .then(cards => {
     cards.forEach(card => {
-        const newCard = new NoteCard(card.id,card.topic,card.summary,card.content,card.links);
+        let newCard
+        if (card.type === "text") {
+            newCard = new TextCard(card.id,card.topic,card.summary,card.content,card.links);
+        } else {
+            newCard = new ImageCard(card.id,card.topic,card.summary,card.content,card.links);
+        }
+        
         newCard.displayCard(workspace);
     });
 })

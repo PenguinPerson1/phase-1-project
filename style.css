@@ -1,16 +1,17 @@
-.note-card {
-    width:250px;
-    float:left;
-    background-color: #ddd;
-  }
 .highlight {
     background-color: yellow;
 }
 .note-card {
+    width:250px;
+    float:left;
+    background-color: #ddd;
     padding: 15px;
     border: 2px;
     border-radius: 25px;
     margin: 15px;
+}
+.note-image {
+    width: 250px;
 }
 .note-link {
     color: blue;
@@ -52,4 +53,3 @@ select {
     right: 10px;
     position: absolute;
 }
-  

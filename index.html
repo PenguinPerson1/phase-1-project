@@ -12,8 +12,14 @@
                 <label for="form-topic">Topic:</label>
                 <input type="text" name="form-topic" id="form-topic" class="restrict-key"> <br>
                 <label for="form-summary">Note Summary:</label>
-                <input type="text" name="form-summary" id="form-summary" placeholder="Enter Summary" class="restrict-key" required> <br>
-                <label for="form-content" required>Note Content:</label>
+                <input type="text" name="form-summary" id="form-summary" placeholder="Enter Summary" class="restrict-key" required>
+
+                <input type="radio" name="form-toggle" id="text-toggle" value="text" checked>
+                <label for="text-toggle">Text</label>
+                <input type="radio" name="form-toggle" id="image-toggle" value="image">
+                <label for="image-toggle">Image</label> <br>
+
+                <label for="form-content" required>Note Content / Image Source:</label>
                 <textarea name="form-content" id="form-content" cols="30" rows="5" placeholder="Enter Note" class="restrict-key"></textarea>
                 <input type="submit">
             </form>
