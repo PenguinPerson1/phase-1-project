@@ -44,7 +44,7 @@
       "id": "caa9",
       "topic": "JavaScript",
       "summary": "Objects using Class",
-      "content": "There are 2 ways to define objects, either using class, which is newer, or by using functions and prototype, which is older. If you use class, the object must include a constructor function with the syntax: 'constructor(parameters){code}'  Private properties can only be accessed by that object and its methods, and they are defined by adding # before the name, and have to be defined outside of the constructor (they can be given values in the constructor).  Static methods can't be accessed through instances, just through the class itself. You can also use Getter and Setter functions to return data as if it was a property. This can be used to only do complicated calculations if they are needed, or return data stored in a different property",
+      "content": "If you use class to define objects, the object must include a constructor function with the syntax: 'constructor(parameters){code}'  Private properties ('#propertyName') can only be accessed by that object and its method and have to be defined outside of the constructor (they can be given values in the constructor). Static methods ('static methodName') can't be accessed through instances, just through the class itself. You can also use Getter and Setter functions to return data as if it was a property. This can be used to only do complicated calculations if they are needed, or return data stored in a different property",
       "links": [
         [
           [
@@ -108,6 +108,38 @@
           ],
           [
             "https://learning.flatironschool.com/courses/7589/pages/using-prototypes?module_item_id=670288"
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "d41d",
+      "topic": "CSS",
+      "summary": "Basic Formatting Select",
+      "content": "Select dropdowns are hard to change, as the formatting of form elements is mostly done by the browsers, and because they one of the most complicated form elements. The menu they pull up when clicked on cannot be styled without JavaScript. The most generally applicable command is 'appearance: none', which clears some of the default formatting. To create a custom arrow on the select, you first need to put the select in a div, as the '::after' pseudo-element cannot be used on form elements. This pseudo-element is then set to have content \"\\25BC\" which is the CSS code for the arrow seen and positioned on the selector. The only other things done on this page were some padding to make the text feel less cramped and margins to visually separate it from unrelated elements.",
+      "links": [
+        [
+          [
+            "W3 Create Custom Select"
+          ],
+          [
+            "https://www.w3schools.com/howto/howto_custom_select.asp"
+          ]
+        ],
+        [
+          [
+            "mdn Advanced Form Styling"
+          ],
+          [
+            "https://developer.mozilla.org/en-US/docs/Learn/Forms/Advanced_form_styling#appearance_controlling_os-level_styling"
+          ]
+        ],
+        [
+          [
+            "mdn ::after"
+          ],
+          [
+            "https://developer.mozilla.org/en-US/docs/Web/CSS/::after"
           ]
         ]
       ]

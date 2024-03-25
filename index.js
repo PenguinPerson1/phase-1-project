@@ -130,11 +130,10 @@ document.addEventListener("keypress", event => {
         const selection = document.getSelection();
         // If you have only one element in your selection
         if(selection.anchorNode === selection.focusNode){
-            // Replaces your selection with a span with the class highlight
+            // Puts your selection in a span with class highlight
             const range = selection.getRangeAt(0);
-            const span = simpleElement("span","highlight",getSelection().toString())
-            selection.deleteFromDocument()
-            range.insertNode(span)
+            const span = simpleElement("span","highlight")
+            range.surroundContents(span);
         }
     }
 })
@@ -143,10 +142,9 @@ workspace.addEventListener("click",event =>{
     // First if is for clicking on highlighted text to remove it
     if(event.target.className==="highlight"){
         const textBox = event.target.parentNode;
-        // Removes all highlight spans from whatever text was clicked
-        const text = Array.from(textBox.childNodes).reduce((acc,element) => acc + element.textContent,"")
-        event.target.remove();
-        textBox.textContent = text;
+        const text  = document.createTextNode(event.target.textContent);
+        event.target.replaceWith(text);
+        textBox.normalize();
     }
     // Second if is for the delete buttons on the cards
     else if(event.target.className === "delete-card"){
