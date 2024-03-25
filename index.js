@@ -159,8 +159,8 @@ linkDiv.addEventListener("click",event=>{
 document.addEventListener("keypress", event => {
     if(event.target.className !== "restrict-key" && event.key === "h"){
         const selection = document.getSelection();
-        // If you have only one element in your selection
-        if(selection.anchorNode === selection.focusNode){
+        // If you have only one element in your selection and it is the text in a .note-text
+        if(selection.anchorNode === selection.focusNode && selection.anchorNode.parentNode.className === "note-text"){
             // Puts your selection in a span with class highlight
             const range = selection.getRangeAt(0);
             const span = simpleElement("span","highlight")
@@ -191,11 +191,18 @@ workspace.addEventListener("click",event =>{
     }
     // Third if is for the edit buttons on the cards
     else if(event.target.className === "edit-card"){
-        const p = event.target.parentNode.querySelector(".note-text");
-        const textArea = simpleElement("textArea","restrict-key",p.textContent);
+        const contentNode = event.target.parentNode.children[1];
+        let textArea;
+        if (contentNode.className === "note-text") {
+            textArea = simpleElement("textArea","restrict-key",contentNode.textContent);
+        }
+        else if (contentNode.className === "note-image"){
+            textArea = simpleElement("textArea","restrict-key",contentNode.src);
+        }
         textArea.cols = "31";
-        textArea.style.height = `${Math.ceil(p.clientHeight*1.1)}px`;
-        p.replaceWith(textArea);
+        textArea.style.height = `${Math.ceil(contentNode.clientHeight+20)}px`;
+        contentNode.replaceWith(textArea);
+
         event.target.textContent = "Submit edits"
         event.target.className = "edit-submit"
     }
@@ -214,8 +221,15 @@ workspace.addEventListener("click",event =>{
         })
         .then(resp => resp.json())
         .then(card => {
-            const p = simpleElement("p","note-text",card.content);
-            textArea.replaceWith(p);
+            if (card.type === "text") {
+                const p = simpleElement("p","note-text",card.content);
+                textArea.replaceWith(p);
+            } else {
+                const img = simpleElement("img","note-image");
+                img.src = card.content
+                textArea.replaceWith(img);
+            }
+            
             event.target.textContent = "edit"
             event.target.className = "edit-card"
         })
