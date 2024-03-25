@@ -151,12 +151,21 @@
       ]
     },
     {
-      "id": "4b85",
-      "topic": "test",
+      "id": "4875",
+      "topic": "JavaScript",
       "type": "image",
-      "summary": "Image Size",
-      "content": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpR71uxt5jrwya15ULcRLv8LeDVneoRdJkgw&s",
-      "links": []
+      "summary": "Common Array Methods",
+      "content": "https://curriculum-content.s3.amazonaws.com/phase-0/array-methods/javascript-array-methods.jpg",
+      "links": [
+        [
+          [
+            "Source"
+          ],
+          [
+            "https://learning.flatironschool.com/courses/7589/pages/array-methods?module_item_id=670166"
+          ]
+        ]
+      ]
     }
   ]
 }
