@@ -72,7 +72,7 @@
       "type": "text",
       "topic": "JavaScript",
       "summary": "Object Inheritance",
-      "content": "To extend a class, use the syntax 'class c0 extends c1', where c0 is the original class and c1 is the one you are creating. This new class inherits the constructor by default, and inherits all methods of the parent class. You can then add more methods by just adding them to the new class, but adding to the constructor is more complicated. You have to define your own constructor in the new class, then use 'super(parentParameters)' to call the parent constructor. The parameters inside the parenthesis should be all that the parent constructor requires. Similarly, 'super.parentMethod()' can be used within methods in order to create a method that adds to the functionality of the parent one.",
+      "content": "To extend a class, use the syntax 'class c1 extends c0', where c0 is the original class and c1 is the one you are creating. This new class inherits the constructor by default, and inherits all methods of the parent class. You can then add more methods by just adding them to the new class, but adding to the constructor is more complicated. You have to define your own constructor in the new class, then use 'super(parentParameters)' to call the parent constructor. The parameters inside the parenthesis should be all that the parent constructor requires. Similarly, 'super.parentMethod()' can be used within methods in order to create a method that adds to the functionality of the parent one.",
       "links": [
         [
           [

@@ -14,6 +14,16 @@ function simpleElement(type,className,text="") {
     element.textContent = text;
     return element;
 }
+// Makes a card based on what type it is
+function makeTypedCard(card){
+    let newCard
+    if (card.type === "text") {
+        newCard = new TextCard(card.id,card.topic,card.summary,card.content,card.links);
+    } else if(card.type === "image") {
+        newCard = new ImageCard(card.id,card.topic,card.summary,card.content,card.links);
+    }
+    return newCard
+}
 // Creates a class responsible for managing the creation of cards
 class NoteCard {
     // Makes an object for the card
@@ -37,17 +47,17 @@ class NoteCard {
         })
     }
     // Adds the object to the location provided, calls to addTopic
-    displayCard(location,extra){
+    displayCard(location,content){
         this.aList.forEach(link => {
             this.section.append(link);
             this.section.append(document.createElement("br"));
         });
-        this.div.append(this.h2,extra,this.section,this.buttonDelete, this.buttonEdit);
+        this.div.append(this.h2,content,this.section,this.buttonDelete, this.buttonEdit);
         location.append(this.div);
         addTopic(this.topic);
     }
 }
-// Each class handles a different 
+// Each class handles a different type of card
 class TextCard extends NoteCard {
     constructor(id,topic,summary,text,links){
         super(id,topic,summary,links);
@@ -85,7 +95,7 @@ form.addEventListener("submit",event =>{
     let type;
     if (form.querySelector("#text-toggle").checked) {
         type = "text"
-    } else {
+    } else if(form.querySelector("#image-toggle").checked) {
         type = "image"
     }
     fetch("http://localhost:3000/cards",{
@@ -105,13 +115,7 @@ form.addEventListener("submit",event =>{
     .then(response => response.json())
     .then(card => {
         console.log(card.type);
-        let newCard;
-        if (card.type === "text") {
-            newCard = new TextCard(card.id,card.topic,card.summary,card.content,card.links);
-        } else {
-            newCard = new ImageCard(card.id,card.topic,card.summary,card.content,card.links);
-            console.log("creating an image");
-        }
+        const newCard = makeTypedCard(card);
         newCard.displayCard(workspace);
 
         formLinks.length = 0;
@@ -252,13 +256,7 @@ fetch("http://localhost:3000/cards")
 .then(response => response.json())
 .then(cards => {
     cards.forEach(card => {
-        let newCard
-        if (card.type === "text") {
-            newCard = new TextCard(card.id,card.topic,card.summary,card.content,card.links);
-        } else {
-            newCard = new ImageCard(card.id,card.topic,card.summary,card.content,card.links);
-        }
-        
+        const newCard = makeTypedCard(card);
         newCard.displayCard(workspace);
     });
 })
