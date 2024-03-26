@@ -1,19 +1,27 @@
+body {
+    background-color: aliceblue;
+}
+
 .highlight {
     background-color: yellow;
 }
 .note-card {
     width:250px;
     float:left;
-    background-color: #ddd;
+    background-color: lightblue;
     padding: 15px;
     border: 2px;
     border-radius: 25px;
     margin: 15px;
 }
+.note-text {
+    width: 250px;
+    padding: 5px;
+}
 .note-image {
     width: 250px;
 }
-.note-link {
+a {
     color: blue;
 }
 #form-content {
@@ -21,6 +29,9 @@
 }
 #links-display {
     display: flex;
+    /* background-color:aliceblue; */
+    border-radius: 20px;
+    border: 2px;
 }
 #links-display li {
     padding-right: 20px;
@@ -52,4 +63,21 @@ select {
     top: 27px;
     right: 10px;
     position: absolute;
+}
+textarea {
+    resize: vertical;
+    font-size: inherit;
+    font-family: inherit;
+}
+.edit-text {
+    width: 250px;
+    border: 0px;
+    padding: 5px;
+    background-color: aliceblue;
+}
+.edit-image {
+    width: 250px;
+    border: 0px;
+    padding: 5px;
+    background-color: aliceblue;
 }

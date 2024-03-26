@@ -1,7 +1,6 @@
-const workspace = document.getElementById("workspace");
 const form = document.getElementById("form");
 const linkDiv = document.getElementById("form-link-div");
-const formLinks =[];
+const formLinks = [];
 const linksDisplay = document.getElementById("links-display");
 const topics = new Set();
 topics.add("")
@@ -47,13 +46,14 @@ class NoteCard {
         })
     }
     // Adds the object to the location provided, calls to addTopic
-    displayCard(location,content){
+    displayCard(content){
+        const workspace = document.getElementById("workspace");
         this.aList.forEach(link => {
             this.section.append(link);
             this.section.append(document.createElement("br"));
         });
         this.div.append(this.h2,content,this.section,this.buttonDelete, this.buttonEdit);
-        location.append(this.div);
+        workspace.append(this.div);
         addTopic(this.topic);
     }
 }
@@ -63,9 +63,7 @@ class TextCard extends NoteCard {
         super(id,topic,summary,links);
         this.p = simpleElement("p","note-text",text);
     }
-    displayCard(location){
-        super.displayCard(location,this.p);
-    }
+    displayCard() {super.displayCard(this.p)}
 }
 class ImageCard extends NoteCard {
     constructor(id,topic,summary,image,links){
@@ -74,9 +72,7 @@ class ImageCard extends NoteCard {
         this.img.src = image;
         console.log(this.img);
     }
-    displayCard(location){
-        super.displayCard(location,this.img);
-    }
+    displayCard() {super.displayCard(this.img)};
 }
 // Adds a topic to the select dropdown
 function addTopic(topic) {
@@ -114,18 +110,15 @@ form.addEventListener("submit",event =>{
     })
     .then(response => response.json())
     .then(card => {
-        console.log(card.type);
         const newCard = makeTypedCard(card);
         newCard.displayCard(workspace);
 
         formLinks.length = 0;
-        while (linksDisplay.firstChild) {
-            linksDisplay.removeChild(linksDisplay.firstChild);
-        }
-            form.querySelector("#form-topic").value="";
-            form.querySelector("#form-summary").value="";
-            form.querySelector("#form-content").value="";
-        })
+        while (linksDisplay.firstChild) linksDisplay.removeChild(linksDisplay.firstChild);
+        form.querySelector("#form-topic").value="";
+        form.querySelector("#form-summary").value="";
+        form.querySelector("#form-content").value="";
+    })
     .catch(error => console.log(error))
 })
 // Adds a link to the list
@@ -137,15 +130,10 @@ linkDiv.addEventListener("submit",event =>{
 
     if(formLinks.length>0) linkDiv.querySelector(".delete").disabled = false;
 
-    // If the link is longer than maxLength characters, it gets shortened
-    const maxLength = 30;
-    let shortUrl = linkUrl.value;
-    if (shortUrl.length>maxLength) shortUrl = shortUrl.slice(0,maxLength-3)+"...";
-
     const li = document.createElement("li");
-    const p0 = simpleElement("p","",linkText.value)
-    const p1 = simpleElement("p","",shortUrl)
-    li.append(p0,p1);
+    const a = simpleElement("a","",linkText.value)
+    a.href = linkUrl.value;
+    li.append(a);
     linksDisplay.append(li);
 
     linkText.value = "";
@@ -161,7 +149,7 @@ linkDiv.addEventListener("click",event=>{
 })
 // Highlights a segment of text
 document.addEventListener("keypress", event => {
-    if(event.target.className !== "restrict-key" && event.key === "h"){
+    if(!Array(event.target.classList).includes("restrict-key") && event.key === "h"){
         const selection = document.getSelection();
         // If you have only one element in your selection and it is the text in a .note-text
         if(selection.anchorNode === selection.focusNode && selection.anchorNode.parentNode.className === "note-text"){
@@ -198,13 +186,14 @@ workspace.addEventListener("click",event =>{
         const contentNode = event.target.parentNode.children[1];
         let textArea;
         if (contentNode.className === "note-text") {
-            textArea = simpleElement("textArea","restrict-key",contentNode.textContent);
+            textArea = simpleElement("textArea","restrict-key edit-text",contentNode.textContent);
+            textArea.style.height = `${Math.ceil(contentNode.clientHeight+20)}px`;
         }
         else if (contentNode.className === "note-image"){
-            textArea = simpleElement("textArea","restrict-key",contentNode.src);
+            textArea = simpleElement("textArea","restrict-key edit-image",contentNode.src);
+            textArea.style.height = `${Math.ceil(contentNode.clientHeight)}px`;
         }
-        textArea.cols = "31";
-        textArea.style.height = `${Math.ceil(contentNode.clientHeight+20)}px`;
+        
         contentNode.replaceWith(textArea);
 
         event.target.textContent = "Submit edits"
@@ -254,10 +243,5 @@ topicSelect.addEventListener("change", event=> {
 // Gets cards on page load
 fetch("http://localhost:3000/cards")
 .then(response => response.json())
-.then(cards => {
-    cards.forEach(card => {
-        const newCard = makeTypedCard(card);
-        newCard.displayCard(workspace);
-    });
-})
+.then(cards => cards.forEach(card => makeTypedCard(card).displayCard()))
 .catch(error => console.log(error))
