@@ -11,7 +11,6 @@
             <form id="form">
                 <label for="form-topic">Topic:</label>
                 <input type="text" name="form-topic" id="form-topic" class="restrict-key">
-                <!-- <br> -->
                 <label for="form-summary">Note Summary:</label>
                 <input type="text" name="form-summary" id="form-summary" placeholder="Enter Summary" class="restrict-key" required>
                 <span>
@@ -27,11 +26,11 @@
             <form id="form-link-div">
                 <label for="link-text">Link Text:</label>
                 <input type="text" name="link-text" id="link-text" class="restrict-key" required>
-                <button type="button" class="delete" disabled>X</button> 
+                <button type="button" class="delete link-button" disabled>Delete</button> 
                 <br>
                 <label for="link-url">Link Url:</label>
                 <input type="text" name="link-url" id="link-url" class="restrict-key" required>
-                <input type="submit" class="add" value="Add"></input>
+                <input type="submit" class="add link-button" value="Add"></input>
                 <br>
                 <ul id="links-display">
                 </ul>
