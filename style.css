@@ -1,45 +1,48 @@
+/* Formatting across the entire page */
+
 body {
     background-color: aliceblue;
 }
-
-.highlight {
-    background-color: yellow;
-}
-.note-card {
-    width:250px;
-    float:left;
-    background-color: lightblue;
-    padding: 15px;
-    border: 2px;
-    border-radius: 25px;
-    margin: 15px;
-}
-.note-text {
-    width: 250px;
-    padding: 5px;
-}
-.note-image {
-    width: 250px;
-}
 a {
     color: blue;
+    display: block;
+    width: max-content;
+    margin: auto;
+}
+textarea {
+    resize: vertical;
+    font-size: inherit;
+    font-family: inherit;
+}
+
+/* Formatting the header forms */
+
+header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+header > * {
+    padding: 20px;
+}
+form > * {
+    margin: 5px;
+    display: inline-block;
 }
 #form-content {
-    inline-size: -webkit-fill-available;
+    width: 98%;
+    margin-top: 0;
 }
-#links-display {
-    display: flex;
-    /* background-color:aliceblue; */
-    border-radius: 20px;
-    border: 2px;
-}
-#links-display li {
-    padding-right: 20px;
-}
-.note-links-list {
-    margin-block-start: 1em;
-    margin-block-end: 1em;
 
+
+
+/* Formatting anything inbetween */
+
+#form-submit {
+    display: block;
+    margin-inline: auto;
+    /* background-color: rgb(206, 232, 255); */
+    padding: 5px;
 }
 select {
     appearance: none;
@@ -64,20 +67,62 @@ select {
     right: 10px;
     position: absolute;
 }
-textarea {
-    resize: vertical;
-    font-size: inherit;
-    font-family: inherit;
+
+
+/* Formatting the main workspace */
+
+main{
+    display:flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
 }
-.edit-text {
+
+
+/* Formatting a card */
+
+.note-card {
     width: 250px;
-    border: 0px;
+    float: left;
+    background-color: lightblue;
+    padding: 15px;
+    border: 2px;
+    border-radius: 25px;
+    margin: 15px;
+    text-align: center;
+}
+.note-card > * {
+    margin-block: 10px;
     padding: 5px;
+    width: 240px;
+}
+.note-card > button {
+    width: 80px;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 14px;
+    background-color: rgb(206, 232, 255);
+    transition-duration: 0.4s;
+}
+.note-image {
+    width: 250px;
+    padding-inline: 0px;
+    margin: 0px;
+}
+.delete-card:hover {
+    background-color: red;
+}
+.edit-card:hover {
+    background-color: blue;
+}
+.edit-submit:hover {
+    background-color: green
+}
+.note-card > textarea {
+    text-align: center;
+    border: 0px;
+    margin: 0px;
     background-color: aliceblue;
 }
-.edit-image {
-    width: 250px;
-    border: 0px;
-    padding: 5px;
-    background-color: aliceblue;
+.highlight {
+    background-color: yellow;
 }

@@ -36,7 +36,7 @@ class NoteCard {
 
         this.h2 = simpleElement("h2","note-summary",summary);
         this.section = simpleElement("section","note-links-list");
-        this.buttonDelete = simpleElement("button","delete-card","X");
+        this.buttonDelete = simpleElement("button","delete-card","Delete");
         this.buttonEdit = simpleElement("button","edit-card","Edit");
 
         this.aList = links.map(link => {
@@ -48,10 +48,7 @@ class NoteCard {
     // Adds the object to the location provided, calls to addTopic
     displayCard(content){
         const workspace = document.getElementById("workspace");
-        this.aList.forEach(link => {
-            this.section.append(link);
-            this.section.append(document.createElement("br"));
-        });
+        this.aList.forEach(link => this.section.append(link));
         this.div.append(this.h2,content,this.section,this.buttonDelete, this.buttonEdit);
         workspace.append(this.div);
         addTopic(this.topic);
@@ -196,7 +193,7 @@ workspace.addEventListener("click",event =>{
         
         contentNode.replaceWith(textArea);
 
-        event.target.textContent = "Submit edits"
+        event.target.textContent = "Submit"
         event.target.className = "edit-submit"
     }
     // Fourth is the sumbit edits button (only after you edit)
@@ -223,7 +220,7 @@ workspace.addEventListener("click",event =>{
                 textArea.replaceWith(img);
             }
             
-            event.target.textContent = "edit"
+            event.target.textContent = "Edit"
             event.target.className = "edit-card"
         })
     }

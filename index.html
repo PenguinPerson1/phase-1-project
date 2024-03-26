@@ -10,37 +10,42 @@
         <header>
             <form id="form">
                 <label for="form-topic">Topic:</label>
-                <input type="text" name="form-topic" id="form-topic" class="restrict-key"> <br>
+                <input type="text" name="form-topic" id="form-topic" class="restrict-key">
+                <!-- <br> -->
                 <label for="form-summary">Note Summary:</label>
                 <input type="text" name="form-summary" id="form-summary" placeholder="Enter Summary" class="restrict-key" required>
-
-                <input type="radio" name="form-toggle" id="text-toggle" value="text" checked>
-                <label for="text-toggle">Text</label>
-                <input type="radio" name="form-toggle" id="image-toggle" value="image">
-                <label for="image-toggle">Image</label> <br>
-
+                <span>
+                    <input type="radio" name="form-toggle" id="text-toggle" value="text" checked>
+                    <label for="text-toggle">Text</label>
+                    <input type="radio" name="form-toggle" id="image-toggle" value="image">
+                    <label for="image-toggle">Image</label>
+                </span>
+                <br>
                 <label for="form-content" required>Note Text / Image Source:</label>
                 <textarea name="form-content" id="form-content" cols="30" rows="5" placeholder="Enter Note" class="restrict-key"></textarea>
-                <input type="submit">
             </form>
             <form id="form-link-div">
                 <label for="link-text">Link Text:</label>
                 <input type="text" name="link-text" id="link-text" class="restrict-key" required>
-                <button type="button" class="delete" disabled>X</button><br>
+                <button type="button" class="delete" disabled>X</button> 
+                <br>
                 <label for="link-url">Link Url:</label>
                 <input type="text" name="link-url" id="link-url" class="restrict-key" required>
                 <input type="submit" class="add" value="Add"></input>
+                <br>
+                <ul id="links-display">
+                </ul>
             </form>
-            <ul id="links-display">
-            </ul>
         </header>
+        <input type="submit" form="form" id="form-submit">
+        <br>
+        <div class="select-wrapper">
+            <label for="topic-select">Topic Filter:</label>
+            <select name="topic-select" id="topic-select">
+                <option value="">None</option>
+            </select>
+        </div>
         <main id="workspace">
-            <div class="select-wrapper">
-                <label for="topic-select">Topic Filter:</label>
-                <select name="topic-select" id="topic-select">
-                    <option value="">None</option>
-                </select>
-            </div>
         </main>
     </body>
 </html>
