@@ -1,5 +1,5 @@
 const form = document.getElementById("form");
-const linkDiv = document.getElementById("form-link-div");
+const linkDiv = document.getElementById("form-links");
 const formLinks = [];
 const linksDisplay = document.getElementById("links-display");
 const topics = new Set();
@@ -188,7 +188,7 @@ workspace.addEventListener("click",event =>{
         }
         else if (contentNode.className === "note-image"){
             textArea = simpleElement("textArea","restrict-key edit-image",contentNode.src);
-            textArea.style.height = `${Math.ceil(contentNode.clientHeight)}px`;
+            textArea.style.height = `${Math.ceil(contentNode.clientHeight-10)}px`;
         }
         
         contentNode.replaceWith(textArea);

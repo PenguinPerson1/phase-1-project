@@ -44,7 +44,7 @@ form > input, form > button {
     border: solid 1px;
     padding: 5px;
 }
-#form-link-div > label {
+#form-links > label {
     width: 70px;
     text-align: right;
 }
@@ -125,8 +125,9 @@ main{
 }
 .note-image {
     width: 250px;
-    padding-inline: 0px;
+    padding: 0px;
     margin: 0px;
+    margin-block: 5px;
 }
 .delete-card:hover {
     background-color: red;
@@ -140,8 +141,13 @@ main{
 .note-card > textarea {
     text-align: center;
     border: 0px;
-    margin: 0px;
     background-color: aliceblue;
+}
+.edit-text {
+    margin: 0px;
+}
+.edit-image {
+    margin-block: 5px;
 }
 .highlight {
     background-color: yellow;
