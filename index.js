@@ -138,15 +138,17 @@ linkDiv.addEventListener("submit",event =>{
 })
 // Removes a link from the list
 linkDiv.addEventListener("click",event=>{
-    if(event.target.className === "delete"){
+    if(event.target.classList.contains("delete")){
         formLinks.pop();
-        if(formLinks.length===0) linkDiv.querySelector(".delete").disabled = true;
+        if(formLinks.length===0) {
+            linkDiv.querySelector(".delete").disabled = true
+        }
         linksDisplay.lastChild.remove();
     }
 })
 // Highlights a segment of text
 document.addEventListener("keypress", event => {
-    if(!Array(event.target.classList).includes("restrict-key") && event.key === "h"){
+    if(!event.target.classList.contains("restrict-key") && event.key === "h"){
         const selection = document.getSelection();
         // If you have only one element in your selection and it is the text in a .note-text
         if(selection.anchorNode === selection.focusNode && selection.anchorNode.parentNode.className === "note-text"){
