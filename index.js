@@ -13,16 +13,7 @@ function simpleElement(type,className,text="") {
     element.textContent = text;
     return element;
 }
-// Makes a card based on what type it is
-function makeTypedCard(card){
-    let newCard
-    if (card.type === "text") {
-        newCard = new TextCard(card.id,card.topic,card.summary,card.content,card.links);
-    } else if(card.type === "image") {
-        newCard = new ImageCard(card.id,card.topic,card.summary,card.content,card.links);
-    }
-    return newCard
-}
+
 // Creates a class responsible for managing the creation of cards
 class NoteCard {
     // Makes an object for the card
@@ -36,8 +27,15 @@ class NoteCard {
 
         this.h2 = simpleElement("h2","note-summary",summary);
         this.section = simpleElement("section","note-links-list");
+        
         this.buttonDelete = simpleElement("button","delete-card","Delete");
+        this.buttonDelete.addEventListener("click",this.constructor.deleteButton);
+
         this.buttonEdit = simpleElement("button","edit-card","Edit");
+        this.buttonEdit.addEventListener("click", this.constructor.editButton.bind(this), false);
+
+        this.buttonSubmit = simpleElement("button","submit-card","Submit");
+        this.buttonSubmit.addEventListener("click", this.constructor.submitButton.bind(this), false);
 
         this.aList = links.map(link => {
             const a = simpleElement("a","note-link",link[0]);
@@ -53,23 +51,80 @@ class NoteCard {
         workspace.append(this.div);
         addTopic(this.topic);
     }
+    // Makes a card based on what type it is
+    static makeTypedCard(card){
+        let newCard
+        if (card.type === "text") {
+            newCard = new TextCard(card.id,card.topic,card.summary,card.content,card.links);
+        } else if(card.type === "image") {
+            newCard = new ImageCard(card.id,card.topic,card.summary,card.content,card.links);
+        }
+        return newCard
+    }
+    // Deletes the card
+    static deleteButton(event){
+        console.log(event);
+        fetch(`http://localhost:3000/cards/${event.target.parentNode.id}`,{
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        .catch(error => console.log(error))
+        event.target.parentNode.remove();
+    }
+    // Replaces the content with an editable textbox and the edit button with submit
+    static editButton(event,content){
+        content.replaceWith(this.textArea);
+        this.buttonEdit.replaceWith(this.buttonSubmit);
+    }
+    // Submits the changes and replaces the content & edit button back
+    static submitButton(event,content,contentVal) {
+        fetch(`http://localhost:3000/cards/${this.div.id}`,{
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({
+                content: this.textArea.value
+            })
+        })
+        .then(resp => resp.json())
+        .then(card => {
+            content[contentVal] = card.content;
+            this.textArea.replaceWith(content);
+            this.buttonSubmit.replaceWith(this.buttonEdit);
+        })
+    }
 }
 // Each class handles a different type of card
 class TextCard extends NoteCard {
     constructor(id,topic,summary,text,links){
         super(id,topic,summary,links);
         this.p = simpleElement("p","note-text",text);
+        this.textArea = simpleElement("textArea","restrict-key edit-text",this.p.textContent);
     }
     displayCard() {super.displayCard(this.p)}
+    static editButton(event) {
+        this.textArea.style.height = `${Math.ceil(this.p.clientHeight+20)}px`;
+        super.editButton(event,this.p);
+    }
+    static submitButton(event) {super.submitButton(event,this.p, "textContent")}
 }
 class ImageCard extends NoteCard {
     constructor(id,topic,summary,image,links){
         super(id,topic,summary,links);
         this.img = simpleElement("img","note-image");
         this.img.src = image;
-        console.log(this.img);
+        this.textArea = simpleElement("textArea","restrict-key edit-image",this.img.src);
     }
-    displayCard() {super.displayCard(this.img)};
+    displayCard() {super.displayCard(this.img);};
+    static editButton(event) {
+        this.textArea.style.height = `${Math.ceil(this.img.clientHeight-10)}px`;
+        super.editButton(event,this.img)
+    }
+    static submitButton(event) {super.submitButton(event,this.img, "src")}
 }
 // Adds a topic to the select dropdown
 function addTopic(topic) {
@@ -107,7 +162,7 @@ form.addEventListener("submit",event =>{
     })
     .then(response => response.json())
     .then(card => {
-        const newCard = makeTypedCard(card);
+        const newCard = NoteCard.makeTypedCard(card);
         newCard.displayCard(workspace);
 
         formLinks.length = 0;
@@ -148,85 +203,25 @@ linkDiv.addEventListener("click",event=>{
 })
 // Highlights a segment of text
 document.addEventListener("keypress", event => {
-    if(!event.target.classList.contains("restrict-key") && event.key === "h"){
+    if(event.key === "h"){
         const selection = document.getSelection();
         // If you have only one element in your selection and it is the text in a .note-text
         if(selection.anchorNode === selection.focusNode && selection.anchorNode.parentNode.className === "note-text"){
             // Puts your selection in a span with class highlight
             const range = selection.getRangeAt(0);
-            const span = simpleElement("span","highlight")
+            const span = simpleElement("span","highlight");
+            span.addEventListener("click",clickHighlight);
             range.surroundContents(span);
         }
     }
 })
-// Removes the clicked highlight, and manages both buttons
-workspace.addEventListener("click",event =>{
-    // First if is for clicking on highlighted text to remove it
-    if(event.target.className==="highlight"){
-        const textBox = event.target.parentNode;
-        const text  = document.createTextNode(event.target.textContent);
-        event.target.replaceWith(text);
-        textBox.normalize();
-    }
-    // Second if is for the delete buttons on the cards
-    else if(event.target.className === "delete-card"){
-        console.log(event.target.parentNode.id);
-        fetch(`http://localhost:3000/cards/${event.target.parentNode.id}`,{
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-        .catch(error => console.log(error))
-        event.target.parentNode.remove();
-    }
-    // Third if is for the edit buttons on the cards
-    else if(event.target.className === "edit-card"){
-        const contentNode = event.target.parentNode.children[1];
-        let textArea;
-        if (contentNode.className === "note-text") {
-            textArea = simpleElement("textArea","restrict-key edit-text",contentNode.textContent);
-            textArea.style.height = `${Math.ceil(contentNode.clientHeight+20)}px`;
-        }
-        else if (contentNode.className === "note-image"){
-            textArea = simpleElement("textArea","restrict-key edit-image",contentNode.src);
-            textArea.style.height = `${Math.ceil(contentNode.clientHeight-10)}px`;
-        }
-        
-        contentNode.replaceWith(textArea);
-
-        event.target.textContent = "Submit"
-        event.target.className = "edit-submit"
-    }
-    // Fourth is the sumbit edits button (only after you edit)
-    else if(event.target.className === "edit-submit"){
-        const textArea = event.target.parentNode.querySelector(".restrict-key");
-        fetch(`http://localhost:3000/cards/${event.target.parentNode.id}`,{
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
-            body: JSON.stringify({
-                content: textArea.value
-            })
-        })
-        .then(resp => resp.json())
-        .then(card => {
-            if (card.type === "text") {
-                const p = simpleElement("p","note-text",card.content);
-                textArea.replaceWith(p);
-            } else {
-                const img = simpleElement("img","note-image");
-                img.src = card.content
-                textArea.replaceWith(img);
-            }
-            
-            event.target.textContent = "Edit"
-            event.target.className = "edit-card"
-        })
-    }
-})
+// Clicking on highlighted text to remove it (called on an Event Listener)
+function clickHighlight(event) {
+    const textBox = event.target.parentNode;
+    const text  = document.createTextNode(event.target.textContent);
+    event.target.replaceWith(text);
+    textBox.normalize();
+}
 // Filters cards by topic
 topicSelect.addEventListener("change", event=> {
     const filter = event.target.value;
@@ -242,5 +237,5 @@ topicSelect.addEventListener("change", event=> {
 // Gets cards on page load
 fetch("http://localhost:3000/cards")
 .then(response => response.json())
-.then(cards => cards.forEach(card => makeTypedCard(card).displayCard()))
+.then(cards => cards.forEach(card => NoteCard.makeTypedCard(card).displayCard()))
 .catch(error => console.log(error))
