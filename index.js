@@ -3,7 +3,7 @@ const linkDiv = document.getElementById("form-links");
 const formLinks = [];
 const linksDisplay = document.getElementById("links-display");
 const topics = new Set();
-topics.add("")
+topics.add("");
 const topicSelect = document.querySelector("#topic-select");
 
 // Creates an element with a class and textContent
@@ -138,9 +138,9 @@ form.addEventListener("submit",event =>{
     console.log(event);
     let type;
     if (form.querySelector("#text-toggle").checked) {
-        type = "text"
+        type = "text";
     } else if(form.querySelector("#image-toggle").checked) {
-        type = "image"
+        type = "image";
     }
     fetch("http://localhost:3000/cards",{
         method: "POST",
@@ -173,13 +173,13 @@ form.addEventListener("submit",event =>{
 linkDiv.addEventListener("submit",event =>{
     event.preventDefault();
     const linkText = linkDiv.querySelector("#link-text");
-    const linkUrl = linkDiv.querySelector("#link-url")
-    formLinks.push([[linkText.value],[linkUrl.value]])
+    const linkUrl = linkDiv.querySelector("#link-url");
+    formLinks.push([[linkText.value],[linkUrl.value]]);
 
-    if(formLinks.length>0) linkDiv.querySelector(".delete").disabled = false;
-
+    linkDiv.querySelector(".delete").disabled = false;
+    
     const li = document.createElement("li");
-    const a = simpleElement("a","",linkText.value)
+    const a = simpleElement("a","",linkText.value);
     a.href = linkUrl.value;
     li.append(a);
     linksDisplay.append(li);
@@ -191,9 +191,7 @@ linkDiv.addEventListener("submit",event =>{
 linkDiv.addEventListener("click",event=>{
     if(event.target.classList.contains("delete")){
         formLinks.pop();
-        if(formLinks.length===0) {
-            linkDiv.querySelector(".delete").disabled = true
-        }
+        linkDiv.querySelector(".delete").disabled = formLinks.length===0;
         linksDisplay.lastChild.remove();
     }
 })
@@ -222,11 +220,7 @@ function clickHighlight(event) {
 topicSelect.addEventListener("change", event=> {
     const filter = event.target.value;
     Array.from(workspace.querySelectorAll(".note-card")).forEach(element => {
-        if(Array.from(element.classList).includes(filter) || filter === ""){
-            element.hidden = false;
-        } else{
-            element.hidden = true;
-        }
+        element.hidden = !(element.classList.contains(filter) || filter === "");
     });
 })
 
