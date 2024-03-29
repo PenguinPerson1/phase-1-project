@@ -135,7 +135,7 @@ main{
 .edit-card:hover {
     background-color: blue;
 }
-.edit-submit:hover {
+.submit-card:hover {
     background-color: green
 }
 .note-card > textarea {

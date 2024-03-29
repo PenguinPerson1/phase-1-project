@@ -20,8 +20,7 @@ class NoteCard {
     constructor(id,topic,summary,links){
         this.topic = topic;
 
-        this.div = document.createElement("div");
-        this.div.className = ("note-card");
+        this.div = simpleElement("div","note-card");
         if(this.topic !== "") this.div.classList.add(topic);
         this.div.id = id; 
 
@@ -53,17 +52,14 @@ class NoteCard {
     }
     // Makes a card based on what type it is
     static makeTypedCard(card){
-        let newCard
         if (card.type === "text") {
-            newCard = new TextCard(card.id,card.topic,card.summary,card.content,card.links);
+            return new TextCard(card.id,card.topic,card.summary,card.content,card.links);
         } else if(card.type === "image") {
-            newCard = new ImageCard(card.id,card.topic,card.summary,card.content,card.links);
+            return new ImageCard(card.id,card.topic,card.summary,card.content,card.links);
         }
-        return newCard
     }
     // Deletes the card
     static deleteButton(event){
-        console.log(event);
         fetch(`http://localhost:3000/cards/${event.target.parentNode.id}`,{
             method: "DELETE",
             headers: {
